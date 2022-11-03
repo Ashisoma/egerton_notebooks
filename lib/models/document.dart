@@ -1,5 +1,11 @@
 class Document {
-  String? doc_title, doc_url, doc_size, page_num;
+  final String doc_title, doc_url, doc_size, page_num;
 
-  Document(this.doc_title,this.doc_url,this.doc_size,this.page_num);
+  const Document({required this.doc_title,required this.doc_url,required this.doc_size,required this.page_num});
+
+
+ static const List<Document> products = [
+   Document(doc_size: '20', doc_title: '', doc_url: '', page_num: '' )
+
+  ];
 }

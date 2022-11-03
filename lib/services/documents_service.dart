@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+import 'dart:convert';
 
 import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
@@ -6,49 +6,25 @@ import 'package:flutter/material.dart';
 import '../models/document.dart';
 
 class DocumentService {
+  static List<Document> doc_list = [];
 
-  static const uri = "http://localhost:8080";
+  static Future<List<Document>> getAllDocuments() async {
+    const uri = "http://localhost:8080";
 
-  final url = Uri.parse(uri);
-
-  static List<Document> doc_list=[];
-
-  
-   Future getAllDocuments() async{
+    final url = Uri.parse(uri);
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as List;
+      
+      // doc_list = json.asMap();
+      doc_list;
       print("Success!");
-      // showSuccessMessage("Success");
     } else {
       print("Failed!");
-      // showFailMessage("Failed");
-      print(response.body);
+      print(response.statusCode);
     }
-    
-    //  doc_list = response;
-  }
-
-
-    void showSuccessMessage(String message, BuildContext context) {
-    final snackbar = SnackBar(
-      content: Text(
-        message,
-        style: const TextStyle(color: Colors.white),
-      ),
-      backgroundColor: Colors.greenAccent,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
-
-  void showFailMessage(String message, BuildContext context) {
-    final snackbar = SnackBar(
-      content: Text(
-        message,
-        style: const TextStyle(color: Colors.white),
-      ),
-      backgroundColor: Colors.redAccent,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    return doc_list;
   }
 }
+
