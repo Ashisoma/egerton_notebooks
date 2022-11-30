@@ -1,19 +1,16 @@
-import 'package:egerton_notebooks/models/faculty.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/color.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class UnitListView extends StatefulWidget {
+  const UnitListView({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<UnitListView> createState() => _UnitListViewState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _UnitListViewState extends State<UnitListView> {
   TextEditingController editingController = TextEditingController();
 
   @override
@@ -56,7 +53,7 @@ class _HomePageState extends State<HomePage> {
             height: MediaQuery.of(context).size.height * 0.05,
           ),
           Text(
-            'Explore other courses',
+            'Choose Unit',
             style: GoogleFonts.nunito(
               fontWeight: FontWeight.w400,
               fontSize: 14,
@@ -65,7 +62,7 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.03,
           ),
-          facultyListView()
+          courseListView()
         ],
       ),
     );
@@ -96,28 +93,30 @@ class _HomePageState extends State<HomePage> {
     return Container();
   }
 
-  facultyListView() {
-    List<String> faculties = [
-      'Faculty of Science',
-      'Faculty of Engineering',
-      'Faculty of Agriculture'
-    ];
+  courseListView() {
+    List<String> year = ['Year 1', 'Year 2', 'Year 3', 'Year 4'];
     return SizedBox(
       height: 120,
       child: ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: faculties.length,
-        itemBuilder: (context, int faculty) => Card(
-          child: MyWidgets.buildBox(
-              color: Colors.green,
-              height: 120,
-              width: 100,
-              widget: Text(
-                faculties[faculty],
-                
-                style:
-                    GoogleFonts.nunito(fontWeight: FontWeight.w500, fontSize: 18),
-              )),
+        itemCount: year.length,
+        itemBuilder: (context, int unit) => MyWidgets.buildBox(
+          color: Colors.green,
+          height: 120,
+          width: 100,
+          widget: Card(
+            child: ListTile(
+              title: Text(
+                year[unit],
+                style: GoogleFonts.nunito(
+                    fontWeight: FontWeight.w500, fontSize: 18),
+              ),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () {
+                // go to view the courses
+              },
+            ),
+          ),
         ),
       ),
     );

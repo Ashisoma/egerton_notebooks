@@ -1,19 +1,16 @@
-import 'package:egerton_notebooks/models/faculty.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/color.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class PdfListView extends StatefulWidget {
+  const PdfListView({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<PdfListView> createState() => _PdfListViewState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PdfListViewState extends State<PdfListView> {
   TextEditingController editingController = TextEditingController();
 
   @override
@@ -47,16 +44,8 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.05,
           ),
-          searchBar(),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.05,
-          ),
-          myUnitsWidget(),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.05,
-          ),
           Text(
-            'Explore other courses',
+            'Choose PDF',
             style: GoogleFonts.nunito(
               fontWeight: FontWeight.w400,
               fontSize: 14,
@@ -65,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.03,
           ),
-          facultyListView()
+          courseListView()
         ],
       ),
     );
@@ -96,28 +85,30 @@ class _HomePageState extends State<HomePage> {
     return Container();
   }
 
-  facultyListView() {
-    List<String> faculties = [
-      'Faculty of Science',
-      'Faculty of Engineering',
-      'Faculty of Agriculture'
-    ];
+  courseListView() {
+    List<String> pdfs = ['Kemei', 'Kabira', 'Topic 3', 'K Maps'];
     return SizedBox(
       height: 120,
       child: ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: faculties.length,
-        itemBuilder: (context, int faculty) => Card(
-          child: MyWidgets.buildBox(
-              color: Colors.green,
-              height: 120,
-              width: 100,
-              widget: Text(
-                faculties[faculty],
-                
-                style:
-                    GoogleFonts.nunito(fontWeight: FontWeight.w500, fontSize: 18),
-              )),
+        itemCount: pdfs.length,
+        itemBuilder: (context, int unit) => MyWidgets.buildBox(
+          color: Colors.green,
+          height: 120,
+          width: 100,
+          widget: Card(
+            child: ListTile(
+              title: Text(
+                pdfs[unit],
+                style: GoogleFonts.nunito(
+                    fontWeight: FontWeight.w500, fontSize: 18),
+              ),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () {
+                // go to view the courses
+              },
+            ),
+          ),
         ),
       ),
     );

@@ -2,8 +2,6 @@ import 'package:egerton_notebooks/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'screens/home_page.dart';
-
 void main() {
   runApp(const MyApp());
 }

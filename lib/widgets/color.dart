@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class MyColors{
 //  backgroundColor background: #1E1E1E;
 // btn greenish color #22B07D;
@@ -14,4 +16,13 @@ class MyColors{
   static const btn_greenish_color = Color(0xff22B07D);
   static const btn_purpleish_color = Color(0xff525298);
 
+}
+
+class MyWidgets {
+  
+
+    static Widget buildBox({Color? color, double? width, double? height, Widget? widget}) {
+    return Container(
+        margin: EdgeInsets.all(12), height: height, width: width, color: color, child: widget);
+  }
 }
