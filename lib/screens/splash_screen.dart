@@ -26,18 +26,22 @@ class SplashScreen extends StatelessWidget {
             ),
             Center(
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     'eger',
+                    textAlign: TextAlign.center,
                     style: GoogleFonts.lato(
                       decoration: TextDecoration.underline,
+                      fontSize: 18,
                     ),
                   ),
                   Text(
                     'NOTES',
+                    textAlign: TextAlign.center,
                     style: GoogleFonts.lato(
-                        fontSize: 16, fontWeight: FontWeight.w400),
+                        fontSize: 20, fontWeight: FontWeight.w400),
                   ),
                 ],
               ),
@@ -64,6 +68,7 @@ class SplashScreen extends StatelessWidget {
                     color: MyColors.btn_greenish_color,
                     borderRadius: BorderRadius.circular(10)),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Center(
                       child: Text(
