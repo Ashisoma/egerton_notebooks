@@ -70,6 +70,9 @@ class SplashScreen extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    const SizedBox(
+                      width: 40,
+                    ),
                     Center(
                       child: Text(
                         'Get Started',

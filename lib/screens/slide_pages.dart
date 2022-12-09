@@ -55,7 +55,7 @@ class SlidePageOne extends StatelessWidget {
             ),
             Container(
               height: 50,
-              width: MediaQuery.of(context).size.height * 0.4,
+              width: MediaQuery.of(context).size.height * 0.35,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 // color: MyColors.backgroud_icon_back_color,
@@ -104,6 +104,9 @@ class SlidePageOne extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 child: Row(
                   children: [
+                    const SizedBox(
+                      width: 40,
+                    ),
                     Center(
                       child: Text(
                         'Next tip',
@@ -131,6 +134,9 @@ class SlidePageOne extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 child: Row(
                   children: [
+                    const SizedBox(
+                      width: 40,
+                    ),
                     Center(
                       child: Text(
                         'Skip tips',
@@ -283,7 +289,7 @@ class SlidePageTwo extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      width: 50,
+                      width: 10,
                     ),
                     const Icon(Icons.arrow_forward),
                   ],
@@ -306,7 +312,7 @@ class SlidePageTwo extends StatelessWidget {
                 child: Row(
                   children: [
                     const SizedBox(
-                      width: 20,
+                      width: 40,
                     ),
                     Center(
                       child: Text(

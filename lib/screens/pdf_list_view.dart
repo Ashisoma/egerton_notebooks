@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/color.dart';
@@ -16,7 +17,10 @@ class _PdfListViewState extends State<PdfListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyColors.background_color,
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: MyColors.background_color,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back,
               color: MyColors.backgroud_icon_back_color),
@@ -36,26 +40,35 @@ class _PdfListViewState extends State<PdfListView> {
             ),
           ],
         ),
-        actions: [IconButton(onPressed: (() {}), icon: const Icon(Icons.menu))],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.05,
-          ),
-          Text(
-            'Choose PDF',
-            style: GoogleFonts.nunito(
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-            ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.03,
-          ),
-          courseListView()
+        actions: [
+          IconButton(
+              onPressed: (() {}),
+              icon: const Icon(
+                Icons.menu,
+                color: MyColors.backgroud_icon_back_color,
+              ))
         ],
+      ),
+      body: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              'Choose PDF',
+              style: GoogleFonts.nunito(
+                fontWeight: FontWeight.w400,
+                fontSize: 22,
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.03,
+            ),
+            Expanded(
+              child: courseListView(),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -81,30 +94,46 @@ class _PdfListViewState extends State<PdfListView> {
     );
   }
 
-  Container myUnitsWidget() {
-    return Container();
-  }
 
   courseListView() {
-    List<String> pdfs = ['Kemei', 'Kabira', 'Topic 3', 'K Maps'];
+    List<String> pdfs = [
+      'Kemei',
+      'Kabira',
+      'Topic 3',
+      'K Maps',
+      'K Maps',
+      'K Maps',
+      'K Maps',
+      'K Maps',
+      'K Maps',
+    ];
     return SizedBox(
       height: 120,
-      child: ListView.builder(
+      child: ListView.separated(
+        separatorBuilder: (context, index) {
+          return Divider(
+            height: MediaQuery.of(context).size.height * 0.015,
+          );
+        },
         scrollDirection: Axis.vertical,
         itemCount: pdfs.length,
-        itemBuilder: (context, int unit) => MyWidgets.buildBox(
-          color: Colors.green,
-          height: 120,
-          width: 100,
+        itemBuilder: (context, int faculty) => MyWidgets.buildBox(
+          // color: Colors.green,
+          height: 80,
           widget: Card(
             child: ListTile(
+              tileColor: MyColors.backgroud_card_color,
               title: Text(
-                pdfs[unit],
+                pdfs[faculty],
                 style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.w500, fontSize: 18),
+                    fontWeight: FontWeight.w400, fontSize: 18),
               ),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
+              leading: const Icon(
+                Icons.picture_as_pdf,
+                color: Colors.red,
+              ),
+              onTap: () async {
+                // await Get.to(() => const PdfListView());
                 // go to view the courses
               },
             ),
