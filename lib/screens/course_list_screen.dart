@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/color.dart';
+import '../widgets/custom_drawer.dart';
 
 class CourseListScreen extends StatefulWidget {
   final Faculty faculty;

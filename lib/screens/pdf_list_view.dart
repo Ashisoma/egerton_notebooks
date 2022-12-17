@@ -1,8 +1,14 @@
+import 'dart:convert';
+
+import 'package:egerton_notebooks/models/pdf_mdl.dart';
+import 'package:egerton_notebooks/services/documents_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import "package:http/http.dart" as http;
 
 import '../widgets/color.dart';
+import '../widgets/custom_drawer.dart';
 
 class PdfListView extends StatefulWidget {
   const PdfListView({super.key});
@@ -13,6 +19,14 @@ class PdfListView extends StatefulWidget {
 
 class _PdfListViewState extends State<PdfListView> {
   TextEditingController editingController = TextEditingController();
+  List pdfs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // DocumentService().getDocs("Computer Science");
+    get("Computer Science");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,19 +108,40 @@ class _PdfListViewState extends State<PdfListView> {
     );
   }
 
+  list() {
+    ListView.builder(
+        itemCount: pdfs == null ? 0 : pdfs.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+              child: InkWell(
+            onTap: () {},
+            child: ListTile(
+              leading: Icon(Icons.person),
+              title: Text("${pdfs[index].fileName}"),
+              subtitle: Text("${pdfs[index].courseName}"),
+            ),
+          ));
+        });
+  }
+
+  Future<dynamic> get(String query) async {
+    var url = Uri.parse("$URL/search/$query");
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as Map;
+      final items = json as List;
+
+      setState(() {
+        pdfs = items;
+      });
+    } else {
+      print(response.statusCode);
+    }
+    // create a doc models
+  }
 
   courseListView() {
-    List<String> pdfs = [
-      'Kemei',
-      'Kabira',
-      'Topic 3',
-      'K Maps',
-      'K Maps',
-      'K Maps',
-      'K Maps',
-      'K Maps',
-      'K Maps',
-    ];
     return SizedBox(
       height: 120,
       child: ListView.separated(
@@ -116,15 +151,15 @@ class _PdfListViewState extends State<PdfListView> {
           );
         },
         scrollDirection: Axis.vertical,
-        itemCount: pdfs.length,
-        itemBuilder: (context, int faculty) => MyWidgets.buildBox(
+        itemCount: pdfs == null ? 0 : pdfs.length,
+        itemBuilder: (context, index) => MyWidgets.buildBox(
           // color: Colors.green,
           height: 80,
           widget: Card(
             child: ListTile(
               tileColor: MyColors.backgroud_card_color,
               title: Text(
-                pdfs[faculty],
+                "${pdfs[index].fileName}",
                 style: GoogleFonts.nunito(
                     fontWeight: FontWeight.w400, fontSize: 18),
               ),

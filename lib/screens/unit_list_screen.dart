@@ -1,14 +1,16 @@
 import 'package:egerton_notebooks/models/faculty.dart';
 import 'package:egerton_notebooks/screens/pdf_list_view.dart';
+import 'package:egerton_notebooks/services/documents_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/color.dart';
+import '../widgets/custom_drawer.dart';
 
 class UnitListView extends StatefulWidget {
   final String course_name;
-  const UnitListView({ required this.course_name,super.key});
+  const UnitListView({required this.course_name, super.key});
 
   @override
   State<UnitListView> createState() => _UnitListViewState();
@@ -16,6 +18,14 @@ class UnitListView extends StatefulWidget {
 
 class _UnitListViewState extends State<UnitListView> {
   TextEditingController editingController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    getAllDocuments(widget.course_name);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +79,9 @@ class _UnitListViewState extends State<UnitListView> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.03,
             ),
-            Expanded(child: courseListView())
+            Expanded(
+              child: courseListView(),
+            ),
           ],
         ),
       ),
@@ -96,8 +108,6 @@ class _UnitListViewState extends State<UnitListView> {
       ),
     );
   }
-
-
 
   courseListView() {
     List<String> year = [
@@ -141,5 +151,18 @@ class _UnitListViewState extends State<UnitListView> {
         ),
       ),
     );
+  }
+
+  
+
+  Future getAllDocuments(String query) async {
+    final response = await DocumentService().get(query);
+    if (response.statusCode == 200) {
+      print("================Success============");
+      print(response.body);
+    } else {
+      print("================Error============");
+      print(response.statusCode);
+    }
   }
 }

@@ -65,6 +65,9 @@ class SlidePageOne extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  const SizedBox(
+                    width: 5,
+                  ),
                   const Icon(
                     Icons.search,
                     size: 30,
@@ -217,6 +220,7 @@ class SlidePageTwo extends StatelessWidget {
     return Scaffold(
       backgroundColor: MyColors.background_color,
       appBar: AppBar(
+        backgroundColor: MyColors.backgroud_card_color,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back,
               color: MyColors.backgroud_icon_back_color),
@@ -391,6 +395,7 @@ class SlidePageThree extends StatelessWidget {
     return Scaffold(
       backgroundColor: MyColors.background_color,
       appBar: AppBar(
+        backgroundColor: MyColors.backgroud_card_color,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back,
               color: MyColors.backgroud_icon_back_color),

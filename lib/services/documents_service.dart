@@ -1,47 +1,37 @@
 import 'dart:convert';
 
+import 'package:get/get_connect/http/src/response/response.dart';
 import "package:http/http.dart" as http;
-import 'package:flutter/material.dart';
 
 import '../models/document.dart';
+import '../models/pdf_mdl.dart';
+
+const String URL = "https://egerton-notebooks.herokuapp.com/";
 
 class DocumentService {
-  static List<Document> doc_list = [];
+  List<PDFModel> doc_list = [];
 
-  static Future<List<Document>> getAllDocuments() async {
-    const uri = "http://localhost:8080";
+  var client = http.Client();
 
-    final url = Uri.parse(uri);
+  Future<dynamic> get(String query) async {
+    var url = Uri.parse("$URL/search/$query");
+    var response = await client.get(url);
 
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      
-      // doc_list = json.asMap();
-      doc_list = json as List<Document>;
-      print(doc_list);
-      print("Success!");
-      print(json);
-    } else {
-      print("Failed!");
-      print(response.statusCode);
-    }
-    return doc_list;
+    return response;
+    // create a doc models
   }
 
-  // Future<List<Document?>> getDocs() async{
-  //   var client = http.Client();
-  //    final url = Uri.parse("");
+  // Future<List> getDocs(String query) async {
+  //   var url = Uri.parse("$URL/search/$query");
 
-  //   var response = await client.get(url);
+  //   var res = await client.get(url);
+  //   if (res.statusCode == 200) {
+  //     List<PDFModel> body = jsonDecode(res.body);
+  //     List pdfs = body.map((dynamic item) => PDFModel.fromJson(item)).toList();
 
-  //   if (response.statusCode == 200) {
-  //     var json = response.body;
-  //     return jsonDecode(json);
+  //     return pdfs;
   //   } else {
-      
+  //     throw "Failed to load pdfs list";
   //   }
-
-  // } 
+  // }
 }
-

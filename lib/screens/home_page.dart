@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/color.dart';
+import '../widgets/custom_drawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,6 +18,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController editingController = TextEditingController();
+
+  List<Faculty> facultyList = Faculty.facultyList;
+  List<Faculty> searchList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +77,31 @@ class _HomePageState extends State<HomePage> {
               'Explore',
               style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w400,
-                fontSize: 14,
+                fontSize: 20,
               ),
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.03,
             ),
             Expanded(
-              child: facultyListView(),
+              child: editingController.text.isNotEmpty && searchList.isEmpty
+                  ? Center(
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.search_off_outlined,
+                            color: MyColors.backgroud_icon_back_color,
+                            size: 35,
+                          ),
+                          Text(
+                            "No results found",
+                            style: GoogleFonts.lato(
+                                fontSize: 20, fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    )
+                  : facultyListView(),
             ),
           ],
         ),
@@ -92,7 +113,14 @@ class _HomePageState extends State<HomePage> {
     return SizedBox(
       child: TextField(
         onChanged: (value) {
-          // filterSearchResults(value);
+          setState(() {
+            searchList = facultyList
+                .where((items) => items
+                    .toString()
+                    .toLowerCase()
+                    .contains(value.toLowerCase()))
+                .toList();
+          });
         },
         controller: editingController,
         decoration: const InputDecoration(
@@ -109,8 +137,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
- 
-
   facultyListView() {
     // List<String> faculties = [
     //   'Faculty of Science',
@@ -120,7 +146,9 @@ class _HomePageState extends State<HomePage> {
     // ];
     return ListView.separated(
       scrollDirection: Axis.vertical,
-      itemCount: Faculty.facultyList.length,
+      itemCount: editingController.text.isNotEmpty
+          ? searchList.length
+          : facultyList.length,
       separatorBuilder: (context, index) => SizedBox(
         height: MediaQuery.of(context).size.height * 0.015,
       ),
@@ -129,7 +157,11 @@ class _HomePageState extends State<HomePage> {
         width: 80,
         widget: GestureDetector(
           onTap: () async {
-            await Get.to(() => CourseListScreen(faculty:Faculty.facultyList[fcIndex],));
+            await Get.to(() => CourseListScreen(
+                  faculty: editingController.text.isNotEmpty
+                      ? searchList[fcIndex]
+                      : facultyList[fcIndex],
+                ));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -138,7 +170,7 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Center(
               child: Text(
-                "Faculty of ${Faculty.facultyList[fcIndex].name}",
+                "Faculty of ${editingController.text.isNotEmpty ? searchList[fcIndex].name : facultyList[fcIndex].name}",
                 style: GoogleFonts.nunito(
                     fontWeight: FontWeight.w400, fontSize: 22),
               ),
