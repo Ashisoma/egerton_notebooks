@@ -19,8 +19,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController editingController = TextEditingController();
 
-  List<Faculty> facultyList = Faculty.facultyList;
+  List<Faculty> _facultyList = Faculty.facultyList;
   List<Faculty> searchList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    searchList = _facultyList;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +120,10 @@ class _HomePageState extends State<HomePage> {
     return SizedBox(
       child: TextField(
         onChanged: (value) {
+          // _runFilter(value);
           setState(() {
-            searchList = facultyList
-                .where((items) => items
+            searchList = _facultyList
+                .where((items) => items.name
                     .toString()
                     .toLowerCase()
                     .contains(value.toLowerCase()))
@@ -138,17 +146,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   facultyListView() {
-    // List<String> faculties = [
-    //   'Faculty of Science',
-    //   'Faculty of Engineering',
-    //   'Faculty of Agriculture',
-    //   'Faculty of Arts'
-    // ];
     return ListView.separated(
       scrollDirection: Axis.vertical,
       itemCount: editingController.text.isNotEmpty
           ? searchList.length
-          : facultyList.length,
+          : _facultyList.length,
       separatorBuilder: (context, index) => SizedBox(
         height: MediaQuery.of(context).size.height * 0.015,
       ),
@@ -160,7 +162,7 @@ class _HomePageState extends State<HomePage> {
             await Get.to(() => CourseListScreen(
                   faculty: editingController.text.isNotEmpty
                       ? searchList[fcIndex]
-                      : facultyList[fcIndex],
+                      : _facultyList[fcIndex],
                 ));
           },
           child: Container(
@@ -170,7 +172,7 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Center(
               child: Text(
-                "Faculty of ${editingController.text.isNotEmpty ? searchList[fcIndex].name : facultyList[fcIndex].name}",
+                "Faculty of ${editingController.text.isNotEmpty ? searchList[fcIndex].name : _facultyList[fcIndex].name}",
                 style: GoogleFonts.nunito(
                     fontWeight: FontWeight.w400, fontSize: 22),
               ),
@@ -179,5 +181,22 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  void _runFilter(String value) {
+    List<Faculty> filterList = [];
+
+    if (value.isEmpty) {
+      filterList = _facultyList;
+    } else {
+      filterList = _facultyList
+          .where(
+              (items) => items.name.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      searchList = filterList;
+    });
   }
 }

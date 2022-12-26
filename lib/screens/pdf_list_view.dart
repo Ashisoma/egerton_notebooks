@@ -11,7 +11,8 @@ import '../widgets/color.dart';
 import '../widgets/custom_drawer.dart';
 
 class PdfListView extends StatefulWidget {
-  const PdfListView({super.key});
+  String? course_name;
+  PdfListView({ this.course_name,super.key});
 
   @override
   State<PdfListView> createState() => _PdfListViewState();
@@ -25,7 +26,7 @@ class _PdfListViewState extends State<PdfListView> {
   void initState() {
     super.initState();
     // DocumentService().getDocs("Computer Science");
-    get("Computer Science");
+    // get("Computer Science");
   }
 
   @override
@@ -124,22 +125,7 @@ class _PdfListViewState extends State<PdfListView> {
         });
   }
 
-  Future<dynamic> get(String query) async {
-    var url = Uri.parse("$URL/search/$query");
-    var response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body) as Map;
-      final items = json as List;
-
-      setState(() {
-        pdfs = items;
-      });
-    } else {
-      print(response.statusCode);
-    }
-    // create a doc models
-  }
 
   courseListView() {
     return SizedBox(

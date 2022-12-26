@@ -1,4 +1,5 @@
 import 'package:egerton_notebooks/models/faculty.dart';
+import 'package:egerton_notebooks/models/pdf_mdl.dart';
 import 'package:egerton_notebooks/screens/pdf_list_view.dart';
 import 'package:egerton_notebooks/services/documents_service.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ class UnitListView extends StatefulWidget {
 }
 
 class _UnitListViewState extends State<UnitListView> {
+  late List<PdfModel>? _pdfList = [];
+
   TextEditingController editingController = TextEditingController();
 
   @override
@@ -24,6 +27,8 @@ class _UnitListViewState extends State<UnitListView> {
     // TODO: implement initState
 
     getAllDocuments(widget.course_name);
+
+    _getData();
     super.initState();
   }
 
@@ -110,50 +115,42 @@ class _UnitListViewState extends State<UnitListView> {
   }
 
   courseListView() {
-    List<String> year = [
-      'Year 1',
-      'Year 2',
-      'Year 3',
-      'Year 4',
-      'Year 5',
-      'Year 6',
-      'Year 7',
-      'Year 8'
-    ];
     return SizedBox(
       height: 120,
-      child: ListView.separated(
-        separatorBuilder: (context, index) {
-          return Divider(
-            height: MediaQuery.of(context).size.height * 0.015,
-          );
-        },
-        scrollDirection: Axis.vertical,
-        itemCount: year.length,
-        itemBuilder: (context, int faculty) => MyWidgets.buildBox(
-          // color: Colors.green,
-          height: 80,
-          widget: Card(
-            child: ListTile(
-              tileColor: MyColors.backgroud_card_color,
-              title: Text(
-                year[faculty],
-                style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.w400, fontSize: 18),
-              ),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () async {
-                await Get.to(() => const PdfListView());
-                // go to view the courses
+      child: _pdfList == null || _pdfList!.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.separated(
+              separatorBuilder: (context, index) {
+                return Divider(
+                  height: MediaQuery.of(context).size.height * 0.015,
+                );
               },
+              scrollDirection: Axis.vertical,
+              itemCount: _pdfList!.length,
+              itemBuilder: (context, int faculty) => MyWidgets.buildBox(
+                // color: Colors.green,
+                height: 80,
+                widget: Card(
+                  child: ListTile(
+                    tileColor: MyColors.backgroud_card_color,
+                    title: Text(
+                      "${_pdfList![faculty].fileName}",
+                      style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.w400, fontSize: 18),
+                    ),
+                    trailing: const Icon(Icons.arrow_forward),
+                    onTap: () async {
+                      await Get.to(() => PdfListView(course_name: _pdfList![faculty].courseName));
+                      // go to view the courses
+                    },
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
-
-  
 
   Future getAllDocuments(String query) async {
     final response = await DocumentService().get(query);
@@ -164,5 +161,10 @@ class _UnitListViewState extends State<UnitListView> {
       print("================Error============");
       print(response.statusCode);
     }
+  }
+
+  void _getData() async {
+    _pdfList = (await DocumentService().getDocuments(widget.course_name));
+    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
   }
 }
